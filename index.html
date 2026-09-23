@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asistente de Revisión de Informes de Laboratorio — IQ-0432 (UCR)</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- PDF.js library via CDN para extracción de texto en el navegador -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+
+  <!-- Header Institucional UCR -->
+  <header class="header-banner">
+    <div class="header-content">
+      <div class="header-title">
+        <h1>Herramienta de Evaluación de Informes de Laboratorio</h1>
+        <p>Laboratorio de Operaciones de Transferencia de Fluidos y Calor (IQ-0432) · Escuela de Ingeniería Química · UCR</p>
+      </div>
+      <div>
+        <span class="badge-ibl">Módulo de Asistencia Docente · Rúbricas Oficiales</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+
+    <!-- Navegación por Pestañas -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-tab="tab-subgrupo">
+        <span>📋</span> Subgrupo y Modalidad
+      </button>
+      <button class="tab-btn" data-tab="tab-pdf">
+        <span>📄</span> Carga de PDF
+      </button>
+      <button class="tab-btn" data-tab="tab-rubrica">
+        <span>📝</span> Rúbrica Dinámica y Comentarios
+      </button>
+      <button class="tab-btn" data-tab="tab-reporte">
+        <span>📄</span> Vista Previa A4 y LaTeX (.tex)
+      </button>
+    </nav>
+
+    <!-- Banner de Dictamen y Calificación en Vivo -->
+    <div id="dictamen-banner" class="dictamen-banner dictamen-aprobado">
+      <div>
+        <span class="dictamen-status" id="dictamen-estado">ESTADO: SOBRESALIENTE (APROBADO)</span>
+        <p id="dictamen-mensaje" style="margin-top: 4px; font-size: 0.88rem;">Cumplimiento pleno y riguroso de los requisitos técnicos y normativos.</p>
+      </div>
+      <div class="dictamen-score">
+        <span id="score-total">100.0</span> <span style="font-size: 1rem; font-weight: normal;">/ 100 pts</span>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         Pestaña 1: Subgrupo, Práctica y Modalidad
+         ========================================== -->
+    <section id="tab-subgrupo" class="tab-content active">
+      <div class="grid-2">
+
+        <!-- Tarjeta de Configuración de Entrega -->
+        <div class="card">
+          <div class="card-title">
+            <span>Configuración de la Práctica de Laboratorio</span>
+          </div>
+
+          <div class="form-group">
+            <label for="select-practica">Práctica de Laboratorio:</label>
+            <select id="select-practica" class="form-control">
+              <!-- Opciones dinámicas cargadas por JS (Bombas, Caída, Intercambio, Calderas) -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="select-modalidad">Modalidad de Evaluación:</label>
+            <select id="select-modalidad" class="form-control" style="font-weight: 700; color: var(--ucr-blue);">
+              <!-- Modalidades dinámicas cargadas según la práctica -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="input-subgrupo">Número de Subgrupo / Equipo:</label>
+            <input type="text" id="input-subgrupo" class="form-control" placeholder="Ej. Subgrupo 01">
+          </div>
+
+          <div class="form-group">
+            <label for="input-tema-proyecto">Título del Informe:</label>
+            <input type="text" id="input-tema-proyecto" class="form-control" placeholder="Ej. Caracterización Hidrodinámica de Bombeo en Serie y Paralelo">
+          </div>
+        </div>
+
+        <!-- Tarjeta de Integrantes y Verificación -->
+        <div class="card">
+          <div class="card-title">
+            <span>Metadatos del Asistente y Estudiantes</span>
+          </div>
+
+          <div class="form-group">
+            <label for="input-evaluador">Asistente / Revisor:</label>
+            <input type="text" id="input-evaluador" class="form-control" value="Asistente Docente">
+          </div>
+
+          <div class="form-group">
+            <label for="input-fecha">Fecha de Revisión:</label>
+            <input type="date" id="input-fecha" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="input-integrantes">Integrantes del Subgrupo:</label>
+            <textarea id="input-integrantes" class="form-control" placeholder="Nombre completo 1 (Carné), Nombre completo 2 (Carné)..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="input-correos">Correos Electrónicos (para envío de retroalimentación):</label>
+            <input type="text" id="input-correos" class="form-control" placeholder="estudiante1@ucr.ac.cr, estudiante2@ucr.ac.cr">
+          </div>
+
+          <!-- Gestor de Sesiones y Borradores de Subgrupo -->
+          <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 12px;">
+            <label style="font-size: 0.86rem; font-weight: 600; color: var(--text-main); display: block; margin-bottom: 8px;">Gestión de Sesión del Subgrupo:</label>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button id="btn-guardar-sesion" class="btn btn-primary" style="font-size: 0.8rem; padding: 6px 12px;">
+                <span>💾</span> Guardar Borrador
+              </button>
+              <button id="btn-cargar-sesion" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px;">
+                <span>📂</span> Cargar Borrador
+              </button>
+              <button id="btn-exportar-json" class="btn btn-success" style="font-size: 0.8rem; padding: 6px 12px;">
+                <span>📥</span> Exportar JSON
+              </button>
+              <label for="input-importar-json" class="btn btn-warning" style="font-size: 0.8rem; padding: 6px 12px; margin: 0; cursor: pointer;">
+                <span>📤</span> Importar JSON
+                <input type="file" id="input-importar-json" accept=".json" style="display: none;">
+              </label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         Pestaña 2: Carga de PDF y Extracción
+         ========================================== -->
+    <section id="tab-pdf" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <span>Lector de Informes (PDF), Visor Directo y Extractor Rápido</span>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 15px;">
+          Arrastre aquí el archivo PDF entregado por el subgrupo para inspeccionar visualmente las páginas, comprobar gráficos, verificar variables IBL y auditar citas o anexos.
+        </p>
+
+        <!-- Zona de Arrastre -->
+        <div id="drop-zone-pdf" class="drop-zone">
+          <input type="file" id="file-pdf-input" accept=".pdf" style="display: none;">
+          <div class="drop-zone-icon">📄</div>
+          <div class="drop-zone-text">
+            <strong>Arrastre aquí el informe (.pdf) o haga clic para seleccionar</strong>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">La extracción se realiza 100% en su navegador de forma privada.</p>
+          </div>
+          <div id="pdf-file-badge" class="pdf-file-badge" style="display: none;"></div>
+        </div>
+
+        <!-- Visor de Páginas PDF (Canvas Integrado) -->
+        <div id="pdf-viewer-container" class="pdf-viewer-card" style="display: none;">
+          <div class="pdf-viewer-toolbar">
+            <button id="btn-pdf-prev" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.8rem;">⬅️ Anterior</button>
+            <span id="pdf-page-num" style="font-size: 0.85rem; font-weight: 700; color: var(--ucr-blue);">Página 1 / 1</span>
+            <button id="btn-pdf-next" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.8rem;">Siguiente ➡️</button>
+            <div style="display: flex; gap: 4px; align-items: center;">
+              <button id="btn-pdf-zoom-out" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.8rem;">🔍-</button>
+              <button id="btn-pdf-zoom-in" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.8rem;">🔍+</button>
+            </div>
+          </div>
+          <div class="pdf-canvas-wrapper">
+            <canvas id="pdf-render-canvas"></canvas>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 15px;">
+          <label for="input-texto-extraido">Texto Extraído del Informe PDF (para copia rápida y auditoría):</label>
+          <textarea id="input-texto-extraido" class="form-control" style="min-height: 140px; font-family: monospace; font-size: 0.85rem;" placeholder="El texto del documento PDF aparecerá aquí automáticamente al cargarlo..."></textarea>
+        </div>
+
+        <!-- Panel de Auditoría Automática de Contenido (Sección 5.2, IEEE/ACS y Estructura) -->
+        <div id="pdf-audit-card" class="audit-card" style="display: none; margin-top: 20px;">
+          <div class="audit-header">
+            <span>🔍 Auditoría Automática del Documento (IQ-0432)</span>
+            <button id="btn-aplicar-hallazgos-rubrica" class="btn btn-warning" style="font-size: 0.8rem; padding: 4px 10px;">
+              <span>⚡</span> Aplicar Hallazgos a Observaciones de Rúbrica
+            </button>
+          </div>
+          
+          <div class="grid-3" style="margin-top: 12px;">
+            <!-- Auditoría de IA Generativa -->
+            <div class="audit-box" id="audit-box-ia">
+              <div class="audit-box-title">🤖 IA Generativa (Sección 5.2)</div>
+              <div id="audit-status-ia" class="audit-badge badge-warning">Sin evaluar</div>
+              <p id="audit-desc-ia" class="audit-desc">El sistema analizará la presencia de la Declaración de Transparencia y lista de prompts.</p>
+            </div>
+
+            <!-- Auditoría Bibliográfica -->
+            <div class="audit-box" id="audit-box-bib">
+              <div class="audit-box-title">📚 Citación (IEEE / ACS & DOI)</div>
+              <div id="audit-status-bib" class="audit-badge badge-warning">Sin evaluar</div>
+              <p id="audit-desc-bib" class="audit-desc">Verificará citas numéricas/autor-año, DOI activo y posibles infracciones de norma APA.</p>
+            </div>
+
+            <!-- Auditoría de Estructura e IBL -->
+            <div class="audit-box" id="audit-box-struct">
+              <div class="audit-box-title">📐 Estructura e IBL</div>
+              <div id="audit-status-struct" class="audit-badge badge-warning">Sin evaluar</div>
+              <p id="audit-desc-struct" class="audit-desc">Revisará la inclusión de Nomenclatura, Apéndices A-D y Anexos obligatorios.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         Pestaña 3: Rúbrica Dinámica y Comentarios
+         ========================================== -->
+    <section id="tab-rubrica" class="tab-content">
+      <div class="grid-2">
+
+        <!-- Panel Izquierdo: Criterios Dinámicos de Calificación -->
+        <div class="card">
+          <div class="card-title">
+            <span id="rubrica-panel-titulo">Criterios de Evaluación</span>
+            <button id="btn-reset-rubrica" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.78rem;">
+              <span>🔄</span> Reiniciar a 100
+            </button>
+          </div>
+
+          <!-- Leyenda de Atajos de Teclado -->
+          <div class="kbd-shortcuts-bar">
+            <span>⌨️ <strong>Atajos de Teclado:</strong> [1] Sobresaliente | [2] Muy Bueno | [3] Bueno | [4] Suficiente | [5] Deficiente | [↑/↓] Cambiar Criterio</span>
+          </div>
+
+          <!-- Contenedor dinámico de criterios generado por JS -->
+          <div id="rubric-criteria-container">
+            <!-- Renderizado dinámicamente según la práctica y modalidad -->
+          </div>
+
+          <!-- Penalizaciones por Reincidencia de Formato -->
+          <div class="penalty-card" id="card-penalizaciones">
+            <div class="penalty-header">
+              <span>🚫 Penalización: Errores Reincidentes de Formato</span>
+              <span style="font-size: 0.82rem; font-weight: normal; color: var(--text-muted);">(-1 pt c/u, máx -15 pts)</span>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <span style="font-size: 0.84rem; color: #555;">Cantidad de errores reincidentes señalados:</span>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <input type="number" id="input-errores-formato" class="rubric-score-input" min="0" max="15" step="1" value="0" style="color: var(--ucr-red);">
+                <span style="font-weight: 700; color: var(--ucr-red); font-size: 0.9rem;">pts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel Derecho: Comentarios Cualitativos y Atajos en LocalStorage -->
+        <div class="card">
+          <div class="card-title">
+            <span>Observaciones y Retroalimentación</span>
+          </div>
+
+          <div class="form-group">
+            <label for="select-seccion-comentario">Sección / Criterio a comentar:</label>
+            <select id="select-seccion-comentario" class="form-control">
+              <!-- Cargado dinámicamente según la modalidad -->
+            </select>
+          </div>
+
+          <!-- Gestor de Atajos Guardados en LocalStorage -->
+          <div style="margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted);">Atajos guardados para esta sección:</span>
+              <span style="font-size: 0.75rem; color: var(--ucr-gold); font-weight: 600;">LocalStorage</span>
+            </div>
+            <div id="shortcuts-container" class="shortcuts-container">
+              <span style="font-size: 0.8rem; color: var(--text-muted); font-style: italic;">Sin atajos aún. Escriba un comentario y presione "Marcar como atajo especial" para guardarlo.</span>
+            </div>
+          </div>
+
+          <!-- Caja de texto del comentario -->
+          <div class="form-group">
+            <textarea id="textarea-comentario-seccion" class="form-control" style="min-height: 140px;" placeholder="Escriba aquí las observaciones técnicas y cualitativas para esta sección..."></textarea>
+            
+            <div style="display: flex; gap: 10px; margin-top: 8px; align-items: center; flex-wrap: wrap;">
+              <button id="btn-guardar-atajo" class="btn-star-shortcut">
+                <span>⭐</span> Marcar comentario como Atajo Especial
+              </button>
+            </div>
+          </div>
+
+          <!-- Resumen de Comentarios Generales / Conclusiones del Revisor -->
+          <div class="form-group" style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label for="textarea-comentarios-generales" style="margin-bottom: 0;">Comentario Global / Dictamen Docente:</label>
+              <button id="btn-sintetizar-observaciones" class="btn btn-warning" style="font-size: 0.78rem; padding: 3px 9px;">
+                <span>🪄</span> Generar Síntesis Automática
+              </button>
+            </div>
+            <textarea id="textarea-comentarios-generales" class="form-control" style="min-height: 95px;" placeholder="Observaciones de cierre para el subgrupo..."></textarea>
+
+            <div style="margin-top: 10px;">
+              <button id="btn-generar-correo" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                <span>📧</span> Generar Notificación de Correo para Estudiantes
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         Pestaña 4: Vista Previa A4 y LaTeX (.tex)
+         ========================================== -->
+    <section id="tab-reporte" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <span>Generador de Rúbrica Oficial (LaTeX / A4 Live Preview)</span>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button id="btn-imprimir-hoja" class="btn btn-warning" title="Imprimir directamente o guardar como PDF en blanco/evaluado">
+              <span>🖨️</span> Imprimir Hoja (PDF)
+            </button>
+            <button id="btn-copiar-tex" class="btn btn-primary">
+              <span>📋</span> Copiar Código .tex
+            </button>
+            <button id="btn-descargar-tex" class="btn btn-success">
+              <span>💾</span> Descargar .tex
+            </button>
+          </div>
+        </div>
+
+        <!-- Conmutador Dual Mode -->
+        <div class="view-mode-toggle">
+          <button id="btn-mode-preview" class="view-mode-btn active">
+            <span>📄</span> Vista Previa del Documento (Hoja A4)
+          </button>
+          <button id="btn-mode-code" class="view-mode-btn">
+            <span>💻</span> Código Fuente LaTeX (.tex)
+          </button>
+        </div>
+
+        <!-- Vista 1: Hoja A4 en Vivo -->
+        <div id="container-vista-previa" class="document-preview-container">
+          <div id="document-preview-sheet" class="document-preview-sheet">
+            <!-- Renderizado dinámico por JavaScript -->
+          </div>
+        </div>
+
+        <!-- Vista 2: Código Fuente .tex -->
+        <div id="container-vista-codigo" style="display: none;">
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 10px;">
+            Código LaTeX autónomo con encabezado institucional centrado y prevención de desfase de cajas. Listo para compilar en Overleaf, TeXstudio o <code>pdflatex</code>:
+          </p>
+          <pre id="codigo-tex-preview" class="tex-code-view">
+<!-- Código TeX dinámico -->
+          </pre>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal para Notificación de Correo Electrónico a Estudiantes -->
+  <div id="modal-email" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span>📧 Notificación de Correo Electrónico — IQ-0432</span>
+        <span id="btn-cerrar-modal-email" class="modal-close">✕</span>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Para (Correos de Integrantes):</label>
+          <input type="text" id="email-modal-destinatarios" class="form-control" readonly>
+        </div>
+        <div class="form-group">
+          <label>Asunto:</label>
+          <input type="text" id="email-modal-asunto" class="form-control" readonly>
+        </div>
+        <div class="form-group">
+          <label>Cuerpo del Correo:</label>
+          <textarea id="email-modal-cuerpo" class="form-control" style="min-height: 220px; font-family: monospace; font-size: 0.85rem;"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-copiar-cuerpo-email" class="btn btn-primary">📋 Copiar Texto del Correo</button>
+        <button id="btn-abrir-mailto" class="btn btn-success">✉️ Abrir Cliente de Correo (`mailto:`)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Autónomo IIFE (Cero dependencias de módulos CORS para compatibilidad double-click) -->
+  <script src="js/app.js"></script>
+
+</body>
+</html>
