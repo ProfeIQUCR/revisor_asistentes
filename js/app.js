@@ -1,6 +1,6 @@
 /* ==========================================================================
    app.js — Motor de Evaluación y Generación de Rúbricas IQ-0432 (UCR)
-   Ecosistema de Revisión de Informes y Trabajo Final (Metodología IBL)
+   Ecosistema de Revisión de Informes de Laboratorio — Versión para Asistentes (Metodología IBL)
    ========================================================================== */
 
 (function () {
@@ -13,7 +13,10 @@
     { id: "BOMBAS", nombre: "Bombas Centrífugas (Módulo Serie y Paralelo)", codigo: "IQ-0432" },
     { id: "CAIDA_PRESION", nombre: "Caída de Presión en Tuberías y Accesorios", codigo: "IQ-0432" },
     { id: "INTERCAMBIO_CALOR", nombre: "Intercambio de Calor (Módulo GUNT WL 110)", codigo: "IQ-0432" },
-    { id: "CALDERAS", nombre: "Calderas (Mini-Auditoría de Seguridad y Eficiencia)", codigo: "IQ-0432" }
+    { id: "AGITACION", nombre: "Agitación y Mezclado", codigo: "IQ-0432" },
+    { id: "VISCOSIDAD", nombre: "Viscosidad y Reología de Fluidos", codigo: "IQ-0432" },
+    { id: "MEDICION_FLUJO", nombre: "Medición de Flujo y Calibración de Medidores", codigo: "IQ-0432" },
+    { id: "CALDERAS", nombre: "Calderas (Práctica Especial)", codigo: "IQ-0432" }
   ];
 
   // Descriptores y Criterios por Modalidad
@@ -568,6 +571,8 @@
     ];
   }
 
+  
+
   // ==========================================
   // 3. ESTADO DE LA APLICACIÓN
   // ==========================================
@@ -576,7 +581,7 @@
     modalidadId: "ARTICULO",
     subgrupo: "Subgrupo 01",
     temaProyecto: "Caracterización Hidrodinámica de Bombeo en Serie y Paralelo",
-    evaluador: "Asistente Docente",
+    evaluador: "Asistente del Curso",
     fecha: new Date().toISOString().split("T")[0],
     integrantes: "",
     correos: "",
@@ -584,6 +589,8 @@
     notas: {}, // id_criterio: nota_0_100
     comentariosPorSeccion: {}, // id_criterio: texto
     comentarioGeneral: "",
+    dictamenModo: "auto", // 'auto' | 'Sobresaliente' | 'Bueno' | 'Suficiente' | 'Condicional' | 'Deficiente' | 'personalizado'
+    dictamenPersonalizado: "",
     penalizacionFormato: 0,
     modoVista: "preview" // 'preview' | 'code'
   };
@@ -592,7 +599,7 @@
   let currentSelectedLevelCondition = null;
 
   // LocalStorage Key para Atajos
-  const SHORTCUTS_STORAGE_KEY = "iq0432_asistentes_shortcuts_v1";
+  const SHORTCUTS_STORAGE_KEY = "iq0432_report_shortcuts_v1";
 
   function getShortcutsStore() {
     try {
@@ -624,6 +631,7 @@
     initExportButtons();
     initLiveCalculation();
     initSessionManager();
+    initDictamenDocenteControls();
     initSynthesizer();
     initEmailModal();
     initKeyboardShortcuts();
@@ -1064,6 +1072,8 @@
     auditResults.findings = findings;
   }
 
+  // ==========================================
+  // 6. GENERADOR DE RÚBRICA DINÁMICA
   function getCategoriasConSubtotales(criterios, scores) {
     const categoriesMap = new Map();
     criterios.forEach(function (c) {
@@ -1337,7 +1347,6 @@
         });
         const inpPenal = document.getElementById("input-errores-formato");
         if (inpPenal) inpPenal.value = 0;
-        appState.penalizacionFormato = 0;
         updateTotalScore();
         renderLivePreview();
       });
@@ -1441,6 +1450,105 @@
     return Math.round(total * 10) / 10;
   }
 
+  function getDictamenInfo() {
+    const total = calculateTotalScore();
+    let dictamenAuto = "Sobresaliente";
+    let dictamenClassAuto = "doc-box-aprobado";
+    let dictamenBadgeAuto = "badge-sobresaliente";
+
+    if (total < 67.5) {
+      dictamenAuto = "Deficiente (< 67.5 pts)";
+      dictamenClassAuto = "doc-box-rechazado";
+      dictamenBadgeAuto = "badge-deficiente";
+    } else if (total < 75) {
+      dictamenAuto = "Suficiente";
+      dictamenClassAuto = "doc-box-condicional";
+      dictamenBadgeAuto = "badge-suficiente";
+    } else if (total < 90) {
+      dictamenAuto = "Bueno";
+      dictamenClassAuto = "doc-box-bueno";
+      dictamenBadgeAuto = "badge-bueno";
+    }
+
+    const autoCalculado = total < 67.5 ? "Deficiente" : (total < 75 ? "Suficiente" : (total < 90 ? "Bueno" : "Sobresaliente"));
+    const modo = appState.dictamenModo || "auto";
+
+    if (modo === "auto") {
+      return {
+        texto: dictamenAuto,
+        textoCorto: autoCalculado,
+        clase: dictamenClassAuto,
+        claseBadge: dictamenBadgeAuto,
+        esAuto: true,
+        autoCalculado: autoCalculado
+      };
+    } else if (modo === "Sobresaliente") {
+      return {
+        texto: "Sobresaliente",
+        textoCorto: "Sobresaliente",
+        clase: "doc-box-aprobado",
+        claseBadge: "badge-sobresaliente",
+        esAuto: false,
+        autoCalculado: autoCalculado
+      };
+    } else if (modo === "Bueno") {
+      return {
+        texto: "Bueno",
+        textoCorto: "Bueno",
+        clase: "doc-box-bueno",
+        claseBadge: "badge-bueno",
+        esAuto: false,
+        autoCalculado: autoCalculado
+      };
+    } else if (modo === "Suficiente") {
+      return {
+        texto: "Suficiente",
+        textoCorto: "Suficiente",
+        clase: "doc-box-condicional",
+        claseBadge: "badge-suficiente",
+        esAuto: false,
+        autoCalculado: autoCalculado
+      };
+    } else if (modo === "Condicional") {
+      return {
+        texto: "Condicional",
+        textoCorto: "Condicional",
+        clase: "doc-box-condicional",
+        claseBadge: "badge-condicional",
+        esAuto: false,
+        autoCalculado: autoCalculado
+      };
+    } else if (modo === "Deficiente") {
+      return {
+        texto: "Deficiente (< 67.5 pts)",
+        textoCorto: "Deficiente",
+        clase: "doc-box-rechazado",
+        claseBadge: "badge-deficiente",
+        esAuto: false,
+        autoCalculado: autoCalculado
+      };
+    } else if (modo === "personalizado") {
+      const custom = (appState.dictamenPersonalizado || "").trim() || autoCalculado;
+      return {
+        texto: custom,
+        textoCorto: custom,
+        clase: dictamenClassAuto,
+        claseBadge: "badge-custom",
+        esAuto: false,
+        autoCalculado: autoCalculado
+      };
+    }
+
+    return {
+      texto: modo,
+      textoCorto: modo,
+      clase: dictamenClassAuto,
+      claseBadge: dictamenBadgeAuto,
+      esAuto: false,
+      autoCalculado: autoCalculado
+    };
+  }
+
   function updateTotalScore() {
     const total = calculateTotalScore();
 
@@ -1471,6 +1579,10 @@
         dictamenEstado.textContent = "ESTADO: DEFICIENTE (< 67.5 PTS)";
         dictamenMensaje.textContent = "Incumplimiento grave de requisitos normativos o de fondo.";
       }
+    }
+
+    if (typeof updateDictamenPillsUI === "function") {
+      updateDictamenPillsUI();
     }
   }
 
@@ -1684,11 +1796,149 @@
     if (inputIntegrantes) inputIntegrantes.value = appState.integrantes;
     if (inputCorreos) inputCorreos.value = appState.correos;
     if (inputPenal) inputPenal.value = appState.penalizacionFormato;
-    if (textareaGeneral) textareaGeneral.value = appState.comentarioGeneral;
+    if (textareaGeneral) textareaGeneral.value = appState.comentarioGeneral || "";
+
+    if (appState.dictamenModo === undefined) appState.dictamenModo = "auto";
+    if (appState.dictamenPersonalizado === undefined) appState.dictamenPersonalizado = "";
+    updateDictamenPillsUI();
 
     initRubric();
     updateTotalScore();
     renderLivePreview();
+  }
+
+  // ==========================================
+  // 8.5 CONTROL DEL DICTAMEN DEL ASISTENTE EVALUADOR
+  // ==========================================
+  function initDictamenDocenteControls() {
+    const pillButtons = document.querySelectorAll(".dictamen-pill");
+    const customWrap = document.getElementById("dictamen-personalizado-wrap");
+    const customInput = document.getElementById("input-dictamen-personalizado");
+    const btnLimpiar = document.getElementById("btn-limpiar-comentarios-generales");
+    const textareaGeneral = document.getElementById("textarea-comentarios-generales");
+
+    pillButtons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const val = this.dataset.dictamen;
+        appState.dictamenModo = val;
+
+        if (val === "personalizado") {
+          if (customWrap) customWrap.style.display = "block";
+          if (customInput) {
+            customInput.value = appState.dictamenPersonalizado || "";
+            customInput.focus();
+          }
+        } else {
+          if (customWrap) customWrap.style.display = "none";
+        }
+
+        updateDictamenPillsUI();
+        renderLivePreview();
+      });
+    });
+
+    if (customInput) {
+      customInput.addEventListener("input", function () {
+        appState.dictamenPersonalizado = this.value;
+        updateDictamenPillsUI();
+        renderLivePreview();
+      });
+    }
+
+    if (btnLimpiar && textareaGeneral) {
+      btnLimpiar.addEventListener("click", function () {
+        if (confirm("¿Desea limpiar las observaciones generales del evaluador?")) {
+          appState.comentarioGeneral = "";
+          textareaGeneral.value = "";
+          renderLivePreview();
+        }
+      });
+    }
+
+    updateDictamenPillsUI();
+  }
+
+  function updateDictamenPillsUI() {
+    const modo = appState.dictamenModo || "auto";
+    const info = getDictamenInfo();
+    const pillButtons = document.querySelectorAll(".dictamen-pill");
+    const statusBadge = document.getElementById("dictamen-status-badge");
+    const customWrap = document.getElementById("dictamen-personalizado-wrap");
+    const customInput = document.getElementById("input-dictamen-personalizado");
+
+    pillButtons.forEach(function (b) {
+      if (b.dataset.dictamen === modo) {
+        b.classList.add("active");
+      } else {
+        b.classList.remove("active");
+      }
+    });
+
+    if (customWrap) {
+      customWrap.style.display = (modo === "personalizado") ? "block" : "none";
+    }
+    if (customInput && modo === "personalizado") {
+      customInput.value = appState.dictamenPersonalizado || "";
+    }
+
+    if (statusBadge) {
+      statusBadge.className = "dictamen-status-pill";
+      if (modo === "auto") {
+        statusBadge.classList.add("pill-auto");
+        statusBadge.textContent = `Auto: ${info.autoCalculado}`;
+      } else if (modo === "Sobresaliente") {
+        statusBadge.classList.add("pill-sobresaliente");
+        statusBadge.textContent = "Manual: Sobresaliente";
+      } else if (modo === "Bueno") {
+        statusBadge.classList.add("pill-bueno");
+        statusBadge.textContent = "Manual: Bueno";
+      } else if (modo === "Suficiente") {
+        statusBadge.classList.add("pill-suficiente");
+        statusBadge.textContent = "Manual: Suficiente";
+      } else if (modo === "Condicional") {
+        statusBadge.classList.add("pill-condicional");
+        statusBadge.textContent = "Manual: Condicional";
+      } else if (modo === "Deficiente") {
+        statusBadge.classList.add("pill-deficiente");
+        statusBadge.textContent = "Manual: Deficiente";
+      } else if (modo === "personalizado") {
+        statusBadge.classList.add("pill-custom");
+        statusBadge.textContent = `Manual: ${info.texto}`;
+      }
+    }
+  }
+
+  // Helper para generar síntesis de observaciones de criterios
+  function generateSynthesizedComment() {
+    const mod = MODALIDADES[appState.modalidadId];
+    if (!mod) return "";
+    const criterios = mod.getCriterios(appState.practicaId);
+
+    let observaciones = [];
+    criterios.forEach(function (c) {
+      if (c.puntos === 0) return;
+      const score = appState.scores[c.id] !== undefined ? appState.scores[c.id] : c.puntos;
+      const comment = appState.comentariosPorSeccion[c.id];
+
+      if (score < c.puntos || comment) {
+        let det = `• ${c.nombre} (${score}/${c.puntos} pts)`;
+        if (comment) det += `: ${comment}`;
+        observaciones.push(det);
+      }
+    });
+
+    let texto = `Se felicita al subgrupo por el trabajo realizado en la evaluación de ${appState.temaProyecto}.\n\n`;
+    if (observaciones.length === 0) {
+      texto += "El entregable cumple con rigor y plenitud la totalidad de los criterios evaluados, manteniendo una calidad técnica y de forma sobresaliente.";
+    } else {
+      texto += "Principales observaciones y puntos de mejora a atender:\n" + observaciones.join("\n");
+    }
+
+    if (appState.penalizacionFormato > 0) {
+      texto += `\n\nSe aplicó un descuento de -${appState.penalizacionFormato} pts por reincidencia de errores de formato.`;
+    }
+
+    return texto;
   }
 
   // ==========================================
@@ -1700,39 +1950,11 @@
     if (!btnSintesis || !textareaGeneral) return;
 
     btnSintesis.addEventListener("click", function () {
-      const mod = MODALIDADES[appState.modalidadId];
-      if (!mod) return;
-      const criterios = mod.getCriterios(appState.practicaId);
-
-      let observaciones = [];
-
-      criterios.forEach(function (c) {
-        if (c.puntos === 0) return;
-        const score = appState.scores[c.id] !== undefined ? appState.scores[c.id] : c.puntos;
-        const comment = appState.comentariosPorSeccion[c.id];
-
-        if (score < c.puntos || comment) {
-          let det = `• ${c.nombre} (${score}/${c.puntos} pts)`;
-          if (comment) det += `: ${comment}`;
-          observaciones.push(det);
-        }
-      });
-
-      let texto = `Se felicita al subgrupo por el trabajo realizado en la evaluación de ${appState.temaProyecto}.\n\n`;
-      if (observaciones.length === 0) {
-        texto += "El entregable cumple con rigor y plenitud la totalidad de los criterios evaluados, manteniendo una calidad técnica y de forma sobresaliente.";
-      } else {
-        texto += "Principales observaciones y puntos de mejora a atender:\n" + observaciones.join("\n");
-      }
-
-      if (appState.penalizacionFormato > 0) {
-        texto += `\n\nSe aplicó un descuento de -${appState.penalizacionFormato} pts por reincidencia de errores de formato.`;
-      }
-
+      const texto = generateSynthesizedComment();
       textareaGeneral.value = texto;
       appState.comentarioGeneral = texto;
       renderLivePreview();
-      alert("Síntesis docente generada automáticamente.");
+      alert("Síntesis del evaluador generada automáticamente.");
     });
   }
 
@@ -1760,7 +1982,7 @@
       cuerpo += `📌 Práctica / Proyecto: ${practicaObj.nombre}\n`;
       cuerpo += `📌 Título del Entregable: ${appState.temaProyecto}\n`;
       cuerpo += `📊 Calificación Final: ${total.toFixed(1)} / 100 pts\n\n`;
-      cuerpo += `--- DICTAMEN DOCENTE Y RETROALIMENTACIÓN ---\n`;
+      cuerpo += `--- DICTAMEN DEL ASISTENTE Y RETROALIMENTACIÓN ---\n`;
       cuerpo += `${appState.comentarioGeneral || "Sin comentarios adicionales."}\n\n`;
       cuerpo += `Por favor atender cada uno de los puntos señalados para sus próximos entregables.\n\n`;
       cuerpo += `Saludos cordiales,\n${appState.evaluador}\nEscuela de Ingeniería Química — UCR`;
@@ -1794,6 +2016,17 @@
     }
   }
 
+  // Helper para escapar HTML en cadenas insertadas en la interfaz
+  function escapeHtml(text) {
+    if (!text) return "";
+    return String(text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   // Helper para escapar caracteres especiales de LaTeX
   function escapeLatex(str) {
     if (!str) return "";
@@ -1819,11 +2052,7 @@
     const criterios = mod.getCriterios(appState.practicaId);
 
     const total = calculateTotalScore();
-
-    let dictamen = "Sobresaliente";
-    if (total < 67.5) dictamen = "Deficiente (< 67.5 pts)";
-    else if (total < 75) dictamen = "Suficiente";
-    else if (total < 90) dictamen = "Bueno";
+    const dictamenInfo = getDictamenInfo();
 
     let tableRows = "";
     const categorias = getCategoriasConSubtotales(criterios, appState.scores);
@@ -1936,7 +2165,7 @@
 \\begin{tabularx}{\\linewidth}{@{}l X l r@{}}
 \\textbf{Subgrupo / Equipo:} & ${subgrupoEsc} & \\textbf{Fecha:} & ${escapeLatex(appState.fecha)} \\\\
 \\textbf{Tema / Título:} & \\multicolumn{3}{X}{${temaEsc}} \\\\
-\\textbf{Docente Evaluador:} & ${evaluadorEsc} & \\textbf{Calificación Final:} & \\textbf{\\textcolor{ucrblue}{\\Large ${total.toFixed(1)} / 100}} \\\\
+\\textbf{Asistente Evaluador:} & ${evaluadorEsc} & \\textbf{Calificación Final:} & \\textbf{\\textcolor{ucrblue}{\\Large ${total.toFixed(1)} / 100}} \\\\
 \\textbf{Integrantes:} & \\multicolumn{3}{X}{${integrantesEsc}} \\\\
 \\end{tabularx}
 
@@ -1952,10 +2181,10 @@
 \\begin{tabularx}{\\linewidth}{|X|c|c|X|}
 \\hline
 \\rowcolor{headergray}
-\\textbf{Criterio de Evaluación} & \\textbf{Pts Máx} & \\textbf{Nota} & \\textbf{Observaciones del Evaluador} \\\\ \\hline
+\\textbf{Criterio de Evaluación} & \\textbf{Pts Máx} & \\textbf{Nota} & \\textbf{Observaciones del Asistente Evaluador} \\\\ \\hline
 ${tableRows}
 \\hline
-\\multicolumn{2}{|r|}{\\textbf{CALIFICACIÓN FINAL TOTAL:}} & \\textbf{${total.toFixed(1)}} & \\textbf{Dictamen: ${dictamen}} \\\\ \\hline
+\\multicolumn{2}{|r|}{\\textbf{CALIFICACIÓN FINAL TOTAL:}} & \\textbf{${total.toFixed(1)}} & \\textbf{Dictamen: ${escapeLatex(dictamenInfo.textoCorto)}} \\\\ \\hline
 \\end{tabularx}
 
 \\vspace{14pt}
@@ -1963,7 +2192,7 @@ ${tableRows}
 % --------------------------------------------------------------------------
 % Comentarios y Conclusiones del Evaluador
 % --------------------------------------------------------------------------
-\\begin{tcolorbox}[colback=headergray, colframe=ucrblue, title=\\textbf{Dictamen Docente y Observaciones Generales}]
+\\begin{tcolorbox}[colback=headergray, colframe=ucrblue, title=\\textbf{Dictamen del Asistente Evaluador: ${escapeLatex(dictamenInfo.textoCorto)} -- Observaciones Generales}]
 ${comentarioGeneralEsc}
 \\end{tcolorbox}
 
@@ -1978,19 +2207,9 @@ ${comentarioGeneralEsc}
     const criterios = mod.getCriterios(appState.practicaId);
 
     const total = calculateTotalScore();
-
-    let dictamen = "Sobresaliente";
-    let dictamenClass = "doc-box-aprobado";
-    if (total < 67.5) {
-      dictamen = "Deficiente (< 67.5 pts)";
-      dictamenClass = "doc-box-rechazado";
-    } else if (total < 75) {
-      dictamen = "Suficiente";
-      dictamenClass = "doc-box-condicional";
-    } else if (total < 90) {
-      dictamen = "Bueno";
-      dictamenClass = "doc-box-aprobado";
-    }
+    const dictamenInfo = getDictamenInfo();
+    const defaultComentario = "Se felicita al subgrupo por el trabajo realizado en esta evaluación. Favor atender las observaciones señaladas en cada criterio para futuros entregables.";
+    const comentarioActual = (appState.comentarioGeneral !== undefined && appState.comentarioGeneral !== "") ? appState.comentarioGeneral : defaultComentario;
 
     let tableHtml = "";
     const categorias = getCategoriasConSubtotales(criterios, appState.scores);
@@ -2073,8 +2292,8 @@ ${comentarioGeneralEsc}
               <td colspan="3">${appState.temaProyecto || "Sin título"}</td>
             </tr>
             <tr>
-              <td><strong>Docente Evaluador:</strong></td>
-              <td>${appState.evaluador || "Prof. Adrián Serrano Mora"}</td>
+              <td><strong>Asistente Evaluador:</strong></td>
+              <td>${appState.evaluador || "Asistente del Curso"}</td>
               <td><strong>Calificación:</strong></td>
               <td><span style="font-size: 1.25rem; font-weight: 800; color: var(--ucr-blue);">${total.toFixed(1)} / 100</span></td>
             </tr>
@@ -2093,7 +2312,7 @@ ${comentarioGeneralEsc}
               <th style="width: 42%;">Criterio de Evaluación</th>
               <th style="width: 12%; text-align: center;">Pts Máx</th>
               <th style="width: 12%; text-align: center;">Nota</th>
-              <th style="width: 34%;">Observaciones del Evaluador</th>
+              <th style="width: 34%;">Observaciones del Asistente Evaluador</th>
             </tr>
           </thead>
           <tbody>
@@ -2101,20 +2320,105 @@ ${comentarioGeneralEsc}
             <tr style="background-color: #f5f5f5; font-weight: bold; border-top: 2px solid #003874;">
               <td colspan="2" style="text-align: right;">CALIFICACIÓN FINAL TOTAL:</td>
               <td style="text-align: center; color: var(--ucr-blue); font-size: 1.05rem;">${total.toFixed(1)}</td>
-              <td>Dictamen: ${dictamen}</td>
+              <td>Dictamen: <span class="doc-dictamen-badge ${dictamenInfo.claseBadge}">${dictamenInfo.texto}</span></td>
             </tr>
           </tbody>
         </table>
 
-        <div class="doc-box ${dictamenClass}">
-          <div class="doc-box-title">
-            <span>📝 Dictamen Docente y Observaciones Generales</span>
+        <div class="doc-box ${dictamenInfo.clase}">
+          <div class="doc-box-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span>📝 Dictamen del Asistente Evaluador y Observaciones Generales:</span>
+              <span class="doc-dictamen-badge ${dictamenInfo.claseBadge}">${dictamenInfo.texto}</span>
+            </div>
+            <div class="preview-dictamen-actions no-print" style="display: flex; align-items: center; gap: 6px;">
+              <label for="preview-select-dictamen" style="margin: 0; color: #475569; font-weight: 600; font-size: 0.78rem;">Dictamen:</label>
+              <select id="preview-select-dictamen" class="preview-mini-select" title="Cambiar dictamen directamente desde la vista previa">
+                <option value="auto"${appState.dictamenModo === 'auto' ? ' selected' : ''}>🔄 Auto (${dictamenInfo.autoCalculado})</option>
+                <option value="Sobresaliente"${appState.dictamenModo === 'Sobresaliente' ? ' selected' : ''}>⭐ Sobresaliente</option>
+                <option value="Bueno"${appState.dictamenModo === 'Bueno' ? ' selected' : ''}>🟢 Bueno</option>
+                <option value="Suficiente"${appState.dictamenModo === 'Suficiente' ? ' selected' : ''}>🟡 Suficiente</option>
+                <option value="Condicional"${appState.dictamenModo === 'Condicional' ? ' selected' : ''}>🟠 Condicional</option>
+                <option value="Deficiente"${appState.dictamenModo === 'Deficiente' ? ' selected' : ''}>🔴 Deficiente</option>
+                <option value="personalizado"${appState.dictamenModo === 'personalizado' ? ' selected' : ''}>✏️ Personalizado...</option>
+              </select>
+              <button type="button" id="preview-btn-sintesis" class="btn btn-warning" style="font-size: 0.74rem; padding: 2px 7px;" title="Generar síntesis basada en la rúbrica">
+                <span>🪄</span> Síntesis
+              </button>
+            </div>
           </div>
-          <div>
-            ${appState.comentarioGeneral || "Se felicita al subgrupo por el trabajo realizado en esta evaluación. Favor atender las observaciones señaladas en cada criterio para futuros entregables."}
+          <div class="doc-box-body" style="margin-top: 6px;">
+            <textarea id="preview-textarea-comentarios-generales" class="doc-preview-textarea screen-only" rows="3" placeholder="Escriba aquí el dictamen y las observaciones generales para el subgrupo...">${escapeHtml(comentarioActual)}</textarea>
+            <div class="doc-preview-text print-only">${escapeHtml(comentarioActual).replace(/\n/g, '<br>')}</div>
+            <div class="preview-textarea-footer no-print" style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 0.74rem; color: #64748b;">
+              <span>✏️ <em>Puede redactar y editar las observaciones directamente en esta caja.</em></span>
+              <span id="preview-chars-counter">${comentarioActual.length} caracteres</span>
+            </div>
           </div>
         </div>
       `;
+
+      // Vincular eventos a la caja editable directamente en la vista previa
+      const previewTextarea = document.getElementById("preview-textarea-comentarios-generales");
+      if (previewTextarea) {
+        previewTextarea.style.height = "auto";
+        previewTextarea.style.height = (previewTextarea.scrollHeight + 4) + "px";
+
+        previewTextarea.addEventListener("input", function () {
+          appState.comentarioGeneral = this.value;
+          this.style.height = "auto";
+          this.style.height = (this.scrollHeight + 4) + "px";
+
+          const tGen = document.getElementById("textarea-comentarios-generales");
+          if (tGen && tGen.value !== this.value) {
+            tGen.value = this.value;
+          }
+
+          const counter = document.getElementById("preview-chars-counter");
+          if (counter) counter.textContent = `${this.value.length} caracteres`;
+
+          const printEl = sheet.querySelector(".doc-preview-text.print-only");
+          if (printEl) printEl.innerHTML = escapeHtml(this.value).replace(/\n/g, "<br>");
+
+          const codeView = document.getElementById("codigo-tex-preview");
+          if (codeView) codeView.textContent = generateLatexCode();
+        });
+      }
+
+      const previewSelect = document.getElementById("preview-select-dictamen");
+      if (previewSelect) {
+        previewSelect.addEventListener("change", function () {
+          if (this.value === "personalizado") {
+            const actual = appState.dictamenPersonalizado || "";
+            const nuevo = prompt("Ingrese el dictamen personalizado:", actual);
+            if (nuevo !== null && nuevo.trim().length > 0) {
+              appState.dictamenPersonalizado = nuevo.trim();
+              appState.dictamenModo = "personalizado";
+            } else if (actual) {
+              appState.dictamenModo = "personalizado";
+            } else {
+              appState.dictamenModo = "auto";
+              this.value = "auto";
+            }
+          } else {
+            appState.dictamenModo = this.value;
+          }
+          updateDictamenPillsUI();
+          renderLivePreview();
+        });
+      }
+
+      const previewBtnSintesis = document.getElementById("preview-btn-sintesis");
+      if (previewBtnSintesis) {
+        previewBtnSintesis.addEventListener("click", function () {
+          const texto = generateSynthesizedComment();
+          appState.comentarioGeneral = texto;
+          const tGen = document.getElementById("textarea-comentarios-generales");
+          if (tGen) tGen.value = texto;
+          renderLivePreview();
+          alert("Síntesis del evaluador generada e insertada.");
+        });
+      }
     }
 
     const codeView = document.getElementById("codigo-tex-preview");

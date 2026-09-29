@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Asistente de Revisión de Informes de Laboratorio — IQ-0432 (UCR)</title>
+  <title>Asistente de Revisión de Informes de Laboratorio — Versión Asistentes — IQ-0432 (UCR)</title>
   <link rel="stylesheet" href="css/styles.css">
   <!-- PDF.js library via CDN para extracción de texto en el navegador -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -18,7 +18,7 @@
         <p>Laboratorio de Operaciones de Transferencia de Fluidos y Calor (IQ-0432) · Escuela de Ingeniería Química · UCR</p>
       </div>
       <div>
-        <span class="badge-ibl">Módulo de Asistencia Docente · Rúbricas Oficiales</span>
+        <span class="badge-ibl">Versión para Asistentes · Metodología IBL</span>
       </div>
     </div>
   </header>
@@ -67,7 +67,7 @@
           <div class="form-group">
             <label for="select-practica">Práctica de Laboratorio:</label>
             <select id="select-practica" class="form-control">
-              <!-- Opciones dinámicas cargadas por JS (Bombas, Caída, Intercambio, Calderas) -->
+              <!-- Opciones dinámicas cargadas por JS -->
             </select>
           </div>
 
@@ -84,7 +84,7 @@
           </div>
 
           <div class="form-group">
-            <label for="input-tema-proyecto">Título del Informe:</label>
+            <label for="input-tema-proyecto">Título del Informe de Laboratorio:</label>
             <input type="text" id="input-tema-proyecto" class="form-control" placeholder="Ej. Caracterización Hidrodinámica de Bombeo en Serie y Paralelo">
           </div>
         </div>
@@ -92,12 +92,12 @@
         <!-- Tarjeta de Integrantes y Verificación -->
         <div class="card">
           <div class="card-title">
-            <span>Metadatos del Asistente y Estudiantes</span>
+            <span>Metadatos del Evaluador y Estudiantes</span>
           </div>
 
           <div class="form-group">
-            <label for="input-evaluador">Asistente / Revisor:</label>
-            <input type="text" id="input-evaluador" class="form-control" value="Asistente Docente">
+            <label for="input-evaluador">Asistente / Evaluador:</label>
+            <input type="text" id="input-evaluador" class="form-control" placeholder="Nombre del Asistente Evaluador" value="Asistente del Curso">
           </div>
 
           <div class="form-group">
@@ -162,7 +162,7 @@
           <div id="pdf-file-badge" class="pdf-file-badge" style="display: none;"></div>
         </div>
 
-        <!-- Visor de Páginas PDF (Canvas Integrado) -->
+        <!-- Visor de Páginas PDF (Canvas Integrado Side-by-Side/Directo) -->
         <div id="pdf-viewer-container" class="pdf-viewer-card" style="display: none;">
           <div class="pdf-viewer-toolbar">
             <button id="btn-pdf-prev" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.8rem;">⬅️ Anterior</button>
@@ -272,7 +272,7 @@
             </select>
           </div>
 
-          <!-- Gestor de Atajos Guardados en LocalStorage -->
+          <!-- Gestor de Atajos Guardados en LocalStorage (Inicia en Blanco) -->
           <div style="margin-bottom: 10px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <span style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted);">Atajos guardados para esta sección:</span>
@@ -294,18 +294,66 @@
             </div>
           </div>
 
-          <!-- Resumen de Comentarios Generales / Conclusiones del Revisor -->
-          <div class="form-group" style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 12px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <label for="textarea-comentarios-generales" style="margin-bottom: 0;">Comentario Global / Dictamen Docente:</label>
-              <button id="btn-sintetizar-observaciones" class="btn btn-warning" style="font-size: 0.78rem; padding: 3px 9px;">
-                <span>🪄</span> Generar Síntesis Automática
+          <!-- Resumen de Dictamen del Asistente y Observaciones Generales -->
+          <div class="dictamen-docente-section" style="margin-top: 18px; border-top: 2px solid var(--border-color); padding-top: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
+              <label style="font-weight: 700; color: var(--ucr-blue); margin-bottom: 0; display: flex; align-items: center; gap: 6px;">
+                <span>⚖️ Dictamen del Asistente:</span>
+                <span id="dictamen-status-badge" class="dictamen-status-pill pill-auto">Auto: Sobresaliente</span>
+              </label>
+              <span style="font-size: 0.75rem; color: var(--text-muted); font-style: italic;">
+                Automático por nota o manual
+              </span>
+            </div>
+
+            <!-- Botones Pill de Selección Rápida del Dictamen -->
+            <div class="dictamen-pill-group" style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
+              <button type="button" class="dictamen-pill dictamen-pill-auto active" data-dictamen="auto" title="Calcular automáticamente según la nota total">
+                <span>🔄</span> Auto
               </button>
+              <button type="button" class="dictamen-pill dictamen-pill-sobresaliente" data-dictamen="Sobresaliente" title="Sobresaliente (≥ 90 pts)">
+                <span>⭐</span> Sobresaliente
+              </button>
+              <button type="button" class="dictamen-pill dictamen-pill-bueno" data-dictamen="Bueno" title="Bueno (75 – 89.9 pts)">
+                <span>🟢</span> Bueno
+              </button>
+              <button type="button" class="dictamen-pill dictamen-pill-suficiente" data-dictamen="Suficiente" title="Suficiente (67.5 – 74.9 pts)">
+                <span>🟡</span> Suficiente
+              </button>
+              <button type="button" class="dictamen-pill dictamen-pill-condicional" data-dictamen="Condicional" title="Condicional (Requiere aclaración / revisión)">
+                <span>🟠</span> Condicional
+              </button>
+              <button type="button" class="dictamen-pill dictamen-pill-deficiente" data-dictamen="Deficiente" title="Deficiente (< 67.5 pts)">
+                <span>🔴</span> Deficiente
+              </button>
+              <button type="button" class="dictamen-pill dictamen-pill-custom" data-dictamen="personalizado" title="Escribir un dictamen personalizado">
+                <span>✏️</span> Personalizado
+              </button>
+            </div>
+
+            <!-- Input para Dictamen Personalizado (visible al pulsar "Personalizado") -->
+            <div id="dictamen-personalizado-wrap" style="display: none; margin-bottom: 10px;">
+              <input type="text" id="input-dictamen-personalizado" class="form-control" placeholder="Escriba aquí el dictamen personalizado (ej: Aprobado con mención especial)..." style="font-size: 0.85rem; font-weight: 600;">
+            </div>
+
+            <!-- Observaciones Generales del Evaluador -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; margin-bottom: 6px;">
+              <label for="textarea-comentarios-generales" style="margin-bottom: 0; font-weight: 700; color: var(--text-main);">
+                📝 Observaciones Generales de Cierre:
+              </label>
+              <div style="display: flex; gap: 6px;">
+                <button type="button" id="btn-sintetizar-observaciones" class="btn btn-warning" style="font-size: 0.78rem; padding: 3px 9px;" title="Generar síntesis basada en criterios evaluados">
+                  <span>🪄</span> Síntesis Automática
+                </button>
+                <button type="button" id="btn-limpiar-comentarios-generales" class="btn btn-secondary" style="font-size: 0.78rem; padding: 3px 8px;" title="Limpiar observaciones generales">
+                  <span>🗑️</span>
+                </button>
+              </div>
             </div>
             <textarea id="textarea-comentarios-generales" class="form-control" style="min-height: 95px;" placeholder="Observaciones de cierre para el subgrupo..."></textarea>
 
             <div style="margin-top: 10px;">
-              <button id="btn-generar-correo" class="btn btn-primary" style="width: 100%; justify-content: center;">
+              <button type="button" id="btn-generar-correo" class="btn btn-primary" style="width: 100%; justify-content: center;">
                 <span>📧</span> Generar Notificación de Correo para Estudiantes
               </button>
             </div>
