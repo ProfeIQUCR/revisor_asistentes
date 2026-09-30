@@ -169,7 +169,45 @@
       0.70: "Presenta los datos desorganizados; amontona los cuadros al inicio sin integrarlos, o uso frecuente de primera persona ('observamos').",
       0.50: "Redacción desorganizada o en voz activa de primera persona en la totalidad de la discusión."
     },
-    // Discusión - Bombas
+    // ==========================================
+    // DISCUSIÓN ESPECÍFICA: BOMBAS CENTRÍFUGAS (TABLA 1.A)
+    // ==========================================
+    disc_bombas_41: {
+      1.0: "Analiza el comportamiento de la bomba a partir de sus curvas características (H-Q, η-Q, W_elec-Q, W_fluido-Q), explica las tendencias en términos de mecánica de fluidos y compara la curva de cabeza vs. caudal (H-Q) experimental con la del fabricante.",
+      0.90: "Analiza las curvas características y compara la curva H-Q con la del fabricante, pero presenta imprecisiones menores en la explicación técnica de 1 tendencia.",
+      0.80: "Analiza las curvas características, pero con imprecisiones moderadas en la comparación de la curva H-Q con la del fabricante o análisis cualitativo.",
+      0.70: "Descripción de curvas incompleta; se limita a describir los gráficos de la bomba sin explicar las tendencias ni comparar H-Q con la curva del fabricante.",
+      0.50: "Omisión del análisis de curvas características."
+    },
+    disc_bombas_42: {
+      1.0: "Construye e interpreta la curva del sistema (pérdidas por fricción + cabeza estática), identifica el punto de operación real y lo compara críticamente contra el punto de máxima eficiencia (BEP).",
+      0.90: "Construye la curva del sistema y ubica el punto de operación, pero presenta imprecisiones menores en la comparación con el punto de máxima eficiencia (BEP).",
+      0.80: "Ubica el punto de operación, pero con imprecisiones moderadas en la construcción de la curva del sistema o en la cabeza estática.",
+      0.70: "Identificación confusa del punto de operación; omite relacionar el punto de operación con el BEP de la bomba.",
+      0.50: "Omisión de la construcción de la curva del sistema y del punto de operación."
+    },
+    disc_bombas_43: {
+      1.0: "Evalúa el desempeño en serie y paralelo, contrasta los datos con la predicción teórica (duplicación de cabeza en serie y caudal en paralelo a caudal/cabeza constante) y diagnostica las desviaciones y asimetrías encontradas.",
+      0.90: "Evalúa las configuraciones serie y paralelo respecto a la teoría, pero presenta imprecisiones menores en el diagnóstico de 1 desviación del sistema real.",
+      0.80: "Evalúa serie y paralelo, pero con imprecisiones moderadas en la explicación de por qué no se alcanzan los valores ideales.",
+      0.70: "Evaluación superficial de arreglos; se limita a indicar si el caudal o cabeza aumentó sin diagnosticar las desviaciones ni el efecto de la curva del sistema.",
+      0.50: "Omisión del análisis comparativo entre operación individual, en serie y en paralelo."
+    },
+    disc_bombas_44: {
+      1.0: "Calcula la presión de succión mediante balance de energía entre el tanque y la brida de succión (justificando en paralelo la presión usada), determina la NPSHd y argumenta las consecuencias de un margen insuficiente con la NPSHr.",
+      0.90: "Determina la NPSHd mediante el balance en succión, pero presenta imprecisiones menores en la argumentación del margen respecto a la NPSHr.",
+      0.80: "Calcula la NPSHd, pero con imprecisiones moderadas en la formulación del balance de energía en la línea de succión.",
+      0.70: "Cálculo de NPSHd incompleto; omite analizar las consecuencias operacionales del margen insuficiente con la NPSHr (cavitación).",
+      0.50: "Omisión total del balance de energía en succión, cálculo de NPSHd o análisis de NPSHr."
+    },
+    disc_bombas_45: {
+      1.0: "Identifica e integra dentro de la prosa de la discusión las posibles fuentes de error experimental e incertidumbres operacionales que justifican las desviaciones observadas en los resultados.",
+      0.90: "Contempla las fuentes de error en la discusión, pero presenta imprecisiones menores en la identificación de 1 causa secundaria.",
+      0.80: "Contempla fuentes de error en la discusión, pero con imprecisiones moderadas (ej. excusas genéricas de 'error humano' sin análisis técnico).",
+      0.70: "Análisis de errores muy superficial; atribuye las desviaciones a causas no relacionadas con el módulo de bombeo.",
+      0.50: "Omisión del análisis de fuentes de error e incertidumbres operacionales dentro del texto de la discusión."
+    },
+    // Aliases legacy para Bombas
     disc_41: {
       1.0: "Analiza el comportamiento de la bomba a partir de sus curvas características (H-Q, η-Q, W_elec-Q, W_fluido-Q), explica las tendencias en términos de mecánica de fluidos y compara la curva de cabeza vs. caudal (H-Q) experimental con la del fabricante.",
       0.90: "Analiza las curvas características y compara la curva H-Q con la del fabricante, pero presenta imprecisiones menores en la explicación técnica de 1 tendencia.",
@@ -205,7 +243,103 @@
       0.70: "Análisis de errores muy superficial; atribuye las desviaciones a causas no relacionadas con el módulo de bombeo.",
       0.50: "Omisión del análisis de fuentes de error e incertidumbres operacionales dentro del texto de la discusión."
     },
-    // 4.1 Conclusiones Cuantitativas
+    // ==========================================
+    // DISCUSIÓN ESPECÍFICA: CAÍDA DE PRESIÓN (TABLA 1.B)
+    // ==========================================
+    disc_caida_41: {
+      1.0: "Analiza cuantitativamente las pérdidas de energía por fricción (pérdidas mayores) en tramos rectos de diferente diámetro, grafica f vs. Re, compara el factor de fricción experimental (f) con las predicciones del diagrama de Moody/Fanning en función del Re y discute el efecto de la rugosidad relativa (ε/D) y del diámetro interno.",
+      0.90: "Analiza las pérdidas por fricción y compara f vs. Re con el diagrama de Moody/Fanning, pero presenta imprecisiones menores en la explicación técnica de 1 factor de desviación.",
+      0.80: "Analiza f vs. Re, pero con imprecisiones moderadas en la comparación con el diagrama de Moody/Fanning o análisis cualitativo.",
+      0.70: "Descripción de pérdidas por fricción incompleta; se limita a describir los datos de caída de presión sin analizar el factor de fricción f o viceversa.",
+      0.50: "Omisión del análisis de pérdidas mayores y del diagrama de Moody/Fanning."
+    },
+    disc_caida_42: {
+      1.0: "Determina la caída de presión (ΔP) y las pérdidas de energía menores producidas por válvulas y accesorios (codos de 90°, 45°, tees, yees, expansiones y contracciones), calcula sus coeficientes de pérdida (K) y los compara con los valores teóricos/tabulados de la literatura, justificando las desviaciones.",
+      0.90: "Determina los coeficientes K en accesorios y los compara con valores teóricos, pero presenta imprecisiones menores en la justificación de la desviación de 1 accesorio.",
+      0.80: "Calcula los coeficientes K y los compara con valores teóricos, pero con imprecisiones moderadas en la justificación de las diferencias.",
+      0.70: "Evaluación de accesorios incompleta; presenta valores de K sin compararlos con los valores teóricos/tabulados o viceversa.",
+      0.50: "Omisión de la determinación de pérdidas menores y coeficientes de pérdida K en accesorios."
+    },
+    disc_caida_43: {
+      1.0: "Identifica e integra dentro de la prosa de la discusión las posibles fuentes de error experimental e incertidumbres operacionales (calidad de la purga de aire en mangueras manométricas, sobre/subestimación de ΔP, precisión de medición de caudal Q) que justifican las desviaciones.",
+      0.90: "Contempla las fuentes de error en la discusión, pero presenta imprecisiones menores en la identificación de 1 causa secundaria.",
+      0.80: "Contempla fuentes de error en la discusión, pero con imprecisiones moderadas (ej. excusas genéricas de 'error humano' sin análisis técnico).",
+      0.70: "Análisis de errores muy superficial; atribuye las desviaciones a causas no relacionadas con el módulo hidrodinámico.",
+      0.50: "Omisión del análisis de fuentes de error e incertidumbres operacionales dentro del texto de la discusión."
+    },
+    // ==========================================
+    // DISCUSIÓN ESPECÍFICA: INTERCAMBIO DE CALOR (TABLA 1.C)
+    // ==========================================
+    disc_calor_41: {
+      1.0: "Analiza el comportamiento térmico y los perfiles de temperatura en intercambiadores de calor operando en configuraciones de flujo paralelo, contracorriente, flujo cruzado-paralelo y flujo cruzado-contracorriente.",
+      0.90: "Analiza los perfiles de temperatura en las configuraciones de flujo, pero presenta imprecisiones menores en el análisis del comportamiento térmico de 1 configuración.",
+      0.80: "Analiza los perfiles de temperatura, pero con imprecisiones moderadas en la comparación del comportamiento térmico entre configuraciones de flujo.",
+      0.70: "Análisis incompleto; se limita a presentar los perfiles de temperatura sin analizar el comportamiento térmico que distingue a las configuraciones de flujo o viceversa.",
+      0.50: "Omisión del análisis del comportamiento térmico y los perfiles de temperatura en las configuraciones de flujo."
+    },
+    disc_calor_42: {
+      1.0: "Evalúa el efecto de la variación del caudal y de la temperatura de operación sobre la tasa de transferencia de calor (Q̇), la Diferencia Media Logarítmica de Temperatura (LMTD) y el Coeficiente Global de Transferencia de Calor (U).",
+      0.90: "Evalúa el efecto del caudal y temperatura sobre Q̇, LMTD y U, pero presenta imprecisiones menores en la explicación del efecto sobre 1 de las 3 variables.",
+      0.80: "Evalúa el efecto del caudal y temperatura, pero con imprecisiones moderadas en la relación entre las condiciones de operación y Q̇, LMTD o U.",
+      0.70: "Análisis incompleto; reporta valores de Q̇, LMTD o U sin evaluar el efecto de la variación del caudal y temperatura sobre estas variables o viceversa.",
+      0.50: "Omisión del análisis del efecto de las condiciones de operación sobre Q̇, LMTD y U."
+    },
+    disc_calor_43: {
+      1.0: "Cuantifica los balances de energía del sistema, determinando el calor cedido por el fluido caliente (Q̇_h), el calor ganado por el fluido frío (Q̇_c) y las pérdidas térmicas hacia el ambiente.",
+      0.90: "Cuantifica los balances de energía determinando Q̇_h y Q̇_c, pero presenta imprecisiones menores en la cuantificación de las pérdidas térmicas al ambiente.",
+      0.80: "Cuantifica Q̇_h y Q̇_c, pero con imprecisiones moderadas en la determinación de las pérdidas térmicas al ambiente.",
+      0.70: "Análisis incompleto; reporta Q̇_h y Q̇_c sin cuantificar las pérdidas térmicas al ambiente o viceversa.",
+      0.50: "Omisión de los balances de energía del sistema."
+    },
+    disc_calor_44: {
+      1.0: "Identifica e integra dentro de la prosa de la discusión las posibles fuentes de error experimental e incertidumbres operacionales que justifican las desviaciones observadas en los resultados.",
+      0.90: "Contempla las fuentes de error en la discusión, pero presenta imprecisiones menores en la identificación de 1 causa secundaria.",
+      0.80: "Contempla fuentes de error en la discusión, pero con imprecisiones moderadas (ej. excusas genéricas de 'error humano' sin análisis técnico).",
+      0.70: "Análisis de errores muy superficial; atribuye las desviaciones a causas no relacionadas con el módulo térmico.",
+      0.50: "Omisión del análisis de fuentes de error e incertidumbres operacionales dentro del texto de la discusión."
+    },
+    // ==========================================
+    // DISCUSIÓN: OTRAS PRÁCTICAS / GENÉRICAS
+    // ==========================================
+    disc_gen_41: {
+      1.0: "Analiza rigurosamente los datos experimentales y gráficos en función de los principios teóricos y fenómenos de transporte del ensayo, justificando el comportamiento físico-químico observado.",
+      0.90: "Analiza las tendencias y fenómenos principales, pero presenta imprecisiones menores en la explicación técnica de 1 variable o comportamiento secundario.",
+      0.80: "Analiza las tendencias, pero con imprecisiones moderadas en la fundamentación teórica o explicaciones cualitativas simplistas.",
+      0.70: "Descripción incompleta; se limita a describir los gráficos sin explicar las causas físicas ni los fenómenos subyacentes.",
+      0.50: "Omisión del análisis de tendencias y fenómenos físico-químicos o análisis conceptualmente erróneo."
+    },
+    disc_gen_42: {
+      1.0: "Contrasta cuantitativamente los resultados experimentales con ecuaciones de diseño, correlaciones y literatura técnica de referencia, justificando críticamente las desviaciones encontradas.",
+      0.90: "Compara con literatura técnica, pero presenta imprecisiones menores en la justificación de la desviación con 1 modelo de referencia.",
+      0.80: "Compara con literatura, pero con imprecisiones moderadas en el sustento de las diferencias o comparación cualitativa sin valores numéricos.",
+      0.70: "Comparación incompleta; reporta valores teóricos sin contrastarlos numéricamente contra los datos experimentales o viceversa.",
+      0.50: "Omisión total de la comparación con literatura técnica o valores de diseño."
+    },
+    disc_gen_43: {
+      1.0: "Identifica e integra dentro de la prosa de la discusión las posibles fuentes de error experimental e incertidumbres operacionales e instrumentales que justifican las desviaciones observadas.",
+      0.90: "Contempla las fuentes de error en la discusión, pero presenta imprecisiones menores en la identificación de 1 causa secundaria.",
+      0.80: "Contempla fuentes de error en la discusión, pero con imprecisiones moderadas (ej. justificaciones genéricas sin sustento técnico).",
+      0.70: "Análisis de errores muy superficial; atribuye desviaciones a causas no relacionadas con el ensayo ejecutado.",
+      0.50: "Omisión del análisis de fuentes de error e incertidumbres operacionales dentro del texto de la discusión."
+    },
+    // ==========================================
+    // SECCIÓN 5: CONCLUSIONES Y RECOMENDACIONES
+    // ==========================================
+    sec_51: {
+      1.0: "Redacta conclusiones específicas y cuantitativas que responden directamente a cada uno de los objetivos específicos planteados, explicando el significado e implicaciones de los hallazgos sin repetir teoría.",
+      0.90: "Redacta conclusiones cuantitativas alineadas a los objetivos, pero presenta imprecisiones menores en el sustento numérico o significancia de 1 conclusión.",
+      0.80: "Redacta conclusiones vinculadas a los objetivos, pero con imprecisiones moderadas (ej. conclusiones cualitativas sin valores numéricos en 1 objetivo).",
+      0.70: "Conclusiones incompletas; omite responder a 1 objetivo específico o se limita a repetir datos en bruto sin análisis de su significado.",
+      0.50: "Conclusiones ausentes, redactadas como opiniones personales, repetición textual de teoría previamente conocida o contradictorias con los resultados."
+    },
+    sec_52: {
+      1.0: "Plantea recomendaciones técnicas viables y realizables para profundizar o ampliar la investigación, justificando con claridad qué, por qué y para qué realizar las futuras pruebas.",
+      0.90: "Plantea recomendaciones viables alineadas al trabajo, pero presenta imprecisiones menores en la justificación de 1 de las propuestas.",
+      0.80: "Plantea recomendaciones aceptables, pero incluye propuestas con dudas menores de viabilidad técnica o de alcance.",
+      0.70: "Incluye recomendaciones no viables, irrealizables o fuera de alcance técnico/económico del laboratorio, o sugerencias generales de escasa aplicabilidad.",
+      0.50: "Recomendaciones ausentes, o consistentes únicamente en propuestas totalmente no viables, parches a errores operativos del laboratorio o pedidos genéricos de 'más cuidado' / 'equipos más precisos'."
+    },
+    // Aliases legacy para Conclusiones
     sec_41: {
       1.0: "Redacta conclusiones específicas y cuantitativas que responden directamente a cada uno de los objetivos específicos planteados, explicando el significado e implicaciones de los hallazgos sin repetir teoría.",
       0.90: "Redacta conclusiones cuantitativas alineadas a los objetivos, pero presenta imprecisiones menores en el sustento numérico o significancia de 1 conclusión.",
@@ -213,7 +347,6 @@
       0.70: "Conclusiones incompletas; omite responder a 1 objetivo específico o se limita a repetir datos en bruto sin análisis de su significado.",
       0.50: "Conclusiones ausentes, redactadas como opiniones personales, repetición textual de teoría previamente conocida o contradictorias con los resultados."
     },
-    // 4.2 Recomendaciones Técnicas
     sec_42: {
       1.0: "Plantea recomendaciones técnicas viables y realizables para profundizar o ampliar la investigación, justificando con claridad qué, por qué y para qué realizar las futuras pruebas.",
       0.90: "Plantea recomendaciones viables alineadas al trabajo, pero presenta imprecisiones menores en la justificación de 1 de las propuestas.",
@@ -221,69 +354,137 @@
       0.70: "Incluye recomendaciones no viables, irrealizables o fuera de alcance técnico/económico del laboratorio, o sugerencias generales de escasa aplicabilidad.",
       0.50: "Recomendaciones ausentes, o consistentes únicamente en propuestas totalmente no viables, parches a errores operativos del laboratorio o pedidos genéricos de 'más cuidado' / 'equipos más precisos'."
     },
-    // 5.1 Nomenclatura: Completitud, Univocidad y Exclusiones (Fondo)
-    sec_51: {
+    // ==========================================
+    // SECCIÓN 6: NOMENCLATURA
+    // ==========================================
+    sec_61: {
       1.0: "Incluye la totalidad de las variables del texto y ecuaciones. Cada símbolo posee un único significado, con descripción clara y unidades SI correctas. Excluye acrónimos/siglas y operadores matemáticos.",
       0.90: "Incluye los símbolos requeridos con unidades correctas, pero presenta imprecisiones menores en 1 de las definiciones o unidades.",
       0.80: "Presenta imprecisiones moderadas en 1 aspecto (ej. omisión de unidades en 2 símbolos) o imprecisiones leves en 2 aspectos.",
       0.70: "Nomenclatura incompleta; omite múltiples símbolos de las ecuaciones o asigna un mismo símbolo a dos variables distintas.",
       0.50: "Omisión total de la sección de Nomenclatura, inclusión de acrónimos/siglas como variables o unidades erróneas en todo el documento."
     },
-    // 5.2 Nomenclatura: Orden Alfabético, 5 Grupos Normativos y Columnas (Forma)
-    sec_52: {
+    sec_62: {
       1.0: "Presentada como lista en columnas (sin cuadro/tabla), ordenada alfabéticamente sin imprecisiones y clasificada estrictamente en los 5 grupos normativos con subtítulos en negrita: (1) Romanas mayúsculas, (2) Romanas minúsculas, (3) Griegas, (4) Subíndices y (5) Superíndices.",
       0.90: "Mantiene la lista en columnas y los 5 grupos normativos con unidades correctas, pero presenta imprecisiones leves en la secuencia alfabética o tipografía de los subtítulos.",
       0.80: "Presenta imprecisiones moderadas o reiteradas en la secuencia alfabética o en la clasificación de los 5 grupos normativos.",
       0.70: "Presenta imprecisiones severas o sistemáticas (ej. omite los subtítulos de grupo o mezcla letras romanas y griegas), o presenta la nomenclatura dentro de un cuadro/tabla tradicional.",
       0.50: "Presenta imprecisiones críticas y generalizadas, lista totalmente desordenada sin secuencia alfabética ni clasificación por grupos, o formato notoriamente alterado."
     },
-    // 6.1 Referencias Bibliográficas (Coincidencia 1:1 y URL/DOI)
-    sec_61: {
+    // ==========================================
+    // SECCIÓN 7: REFERENCIAS BIBLIOGRÁFICAS
+    // ==========================================
+    sec_71: {
       1.0: "Coincidencia 1:1 entre las citas del texto y la lista final de referencias (sin citas ni referencias huérfanas). Todos los medios digitales consultados (artículos, páginas web, manuales en línea) incluyen sus campos obligatorios completos y la URL activa o el DOI correspondiente.",
       0.90: "Coincidencia 1:1 entre citas y referencias, pero presenta imprecisiones leves en los campos de 1 referencia o la omisión puntual de la URL/DOI en 1 medio digital.",
       0.80: "Presenta imprecisiones moderadas o reiteradas en los campos obligatorios, omisión recurrente de la URL/DOI en medios digitales, o la existencia de 1 cita/referencia huérfana.",
       0.70: "Lista bibliográfica desorganizada o incompleta; presenta imprecisiones severas o sistemáticas en los campos obligatorios, múltiples medios digitales sin URL/DOI o citas huérfanas.",
       0.50: "Referencias ausentes, o inclusión de citas/referencias digitales inventadas o falsificadas."
     },
-    // 7.1 Apéndice A: Datos Crudos
-    sec_71: {
+    // ==========================================
+    // SECCIÓN 8: APÉNDICES Y ANEXOS
+    // ==========================================
+    sec_81: {
       1.0: "Presenta los datos experimentales crudos con correspondencia 1:1 absoluta con la hoja o archivo digital de datos de campo.",
       0.90: "Presenta los datos crudos con correspondencia adecuada, pero con imprecisiones leves en la trascripción de 1 valor secundario.",
       0.80: "Presenta la mayoría de los datos crudos, pero con imprecisiones moderadas en la correspondencia de varios valores.",
       0.70: "Datos experimentales incompletos; incongruencia notoria entre los datos reportados y el archivo crudo de campo.",
       0.50: "Omisión total de la sección de datos experimentales crudos o datos alterados/falsificados."
     },
-    // 7.2 Apéndice B: Resultados Intermedios (Reporte) / Muestra de Cálculo (Artículo)
-    sec_72: {
+    sec_82: {
       1.0: "En Reporte: Presenta cuadros completos con la totalidad de los valores intermedios, demostrando concordancia absoluta con la lógica de cálculo verificable en el Apéndice C. / En Artículo: Presenta los títulos del cálculo a realizar y la ecuación numerada requerida para cada apartado.",
       0.90: "Presenta los resultados intermedios o muestra de cálculo con concordancia adecuada, pero con imprecisiones leves en la lógica de cálculo o especificación de 1 ecuación.",
       0.80: "Presenta resultados intermedios o cálculos principales, pero con imprecisiones moderadas en la secuencia lógica de cálculo u omisión de origen/destino de datos.",
       0.70: "Resultados intermedios o muestra de cálculo incompleta; omite valores intermedios esenciales o apartados clave para seguir el flujo del cálculo.",
       0.50: "Omisión de la sección de resultados intermedios o de la muestra de cálculo, o valores matemáticamente incoherentes."
     },
-    // 7.3 Apéndice C: Muestra de Cálculo (Reporte) / Anexos (Artículo)
-    sec_73: {
+    sec_83: {
       1.0: "En Reporte: Presenta estrictamente UN cálculo de muestra por apartado: título, ecuación (C.X), origen de datos (cuadro/fila/columna), sustitución y destino (cuadro/fila/columna). / En Artículo: Adjunta la imagen de datos crudos (1 pt), hoja de cálculo Excel funcional (1 pt) y Declaración de Transparencia IA.",
       0.90: "Desarrolla la muestra de cálculo (Reporte) o adjunta ambos anexos (Artículo), pero presenta imprecisiones leves en la especificación de 1 origen/destino o legibilidad de imagen.",
       0.80: "Desarrolla los cálculos principales con imprecisiones moderadas (Reporte), o la hoja de cálculo de anexos presenta fórmulas sin automatizar (Artículo).",
       0.70: "Muestra de cálculo incompleta o desorganizada (Reporte), o adjunta únicamente 1 de los 2 anexos obligatorios (Artículo).",
       0.50: "Omisión de la muestra de cálculo (Reporte) o de los anexos obligatorios (Artículo)."
     },
-    // 7.4 Apéndice D: Procedimiento Experimental (Reporte)
-    sec_74: {
+    sec_84: {
       1.0: "Cumple la codificación normativa y presenta el diagrama o flujo del procedimiento experimental en el Apéndice D.",
       0.90: "Mantiene la codificación de apéndices y procedimiento, pero presenta imprecisiones leves en la numeración de 1 cuadro o título.",
       0.80: "Presenta imprecisiones moderadas en la nomenclatura o codificación de los apéndices o procedimiento.",
       0.70: "Codificación desorganizada; omite las letras de apéndice (A, B, C, D) en la titulación de cuadros y ecuaciones.",
       0.50: "Apéndices sin títulos, sin codificación ni estructura organizativa."
     },
-    // 7.5 Anexos Obligatorios (Reporte)
-    sec_75: {
+    sec_85: {
       1.0: "Adjunta la imagen/fotografía o archivo digital (tablet/PC) de los datos crudos tomados en el laboratorio (1 pt), integra la hoja de cálculo Excel funcional (1 pt) y la Declaración Obligatoria de Transparencia e IA (Sección 5.2).",
       0.90: "Adjunta ambos anexos y declaración, pero el archivo/imagen de los datos de campo presenta imprecisiones leves de legibilidad.",
       0.80: "Entrega la hoja de datos de campo y Excel, pero la hoja de cálculo presenta imprecisiones moderadas en la automatización de fórmulas.",
       0.70: "Omite el anexo de la Declaración de Transparencia y Uso de IA (Sección 5.2) o la hoja de datos de campo es parcialmente ilegible.",
       0.50: "Omisión total de ambos anexos obligatorios (0 pts en anexos)."
+    },
+    // Aliases legacy para Apéndices
+    sec_72: {
+      1.0: "En Reporte: Presenta cuadros completos con la totalidad de los valores intermedios. / En Artículo: Presenta títulos de cálculo y ecuaciones numeradas.",
+      0.90: "Presenta resultados intermedios o muestra de cálculo con imprecisiones leves.",
+      0.80: "Presenta resultados con imprecisiones moderadas.",
+      0.70: "Resultados intermedios o muestra incompleta.",
+      0.50: "Omisión de resultados intermedios o muestra de cálculo."
+    },
+    sec_73: {
+      1.0: "En Reporte: Muestra de cálculo formal (C.X). / En Artículo: Anexos obligatorios.",
+      0.90: "Desarrolla cálculos o anexos con imprecisiones leves.",
+      0.80: "Cálculos o anexos con imprecisiones moderadas.",
+      0.70: "Muestra o anexos incompletos.",
+      0.50: "Omisión de muestra de cálculo o anexos."
+    },
+    sec_74: {
+      1.0: "Cumple la codificación normativa y presenta el diagrama o flujo del procedimiento experimental en el Apéndice D.",
+      0.90: "Mantiene la codificación pero con imprecisiones leves.",
+      0.80: "Imprecisiones moderadas en codificación o procedimiento.",
+      0.70: "Codificación desorganizada u omite letras de apéndice.",
+      0.50: "Apéndices sin títulos ni estructura."
+    },
+    sec_75: {
+      1.0: "Adjunta datos crudos de campo, hoja Excel funcional y Declaración de Transparencia IA.",
+      0.90: "Adjunta ambos anexos pero con imprecisiones leves de legibilidad.",
+      0.80: "Entrega datos y Excel pero con imprecisiones moderadas.",
+      0.70: "Omite declaración IA o datos parcialmente ilegibles.",
+      0.50: "Omisión total de anexos obligatorios."
+    },
+    // ==========================================
+    // DISCUSIÓN ESPECÍFICA: TRABAJO FINAL (TABLA 2.A)
+    // ==========================================
+    tf_41: {
+      1.0: "Desarrolla un análisis estadístico exhaustivo del DOE: verificación de supuestos del modelo (normalidad, homocedasticidad e independencia) o justificación técnica, especificación del nivel de significancia (α), pruebas de hipótesis (p-valor o F), comparaciones múltiples (LSD/Tukey) y evaluación de efectos principales e interacciones.",
+      0.90: "Desarrolla el análisis completo del ANOVA y supuestos, pero presenta imprecisiones menores en la interpretación de los resultados estadísticos.",
+      0.80: "Aplica el ANOVA pero con imprecisiones moderadas (ej. omite verificar o justificar supuestos, omite el nivel de confianza, o no aplica LSD cuando era requerido).",
+      0.70: "Análisis estadístico incompleto; se limita a reportar la tabla del ANOVA sin pruebas de hipótesis ni verificación de supuestos o sin interpretar los resultados.",
+      0.50: "Omisión total del análisis estadístico o presentación de datos sin tratamiento estadístico formal."
+    },
+    tf_42: {
+      1.0: "Explica en profundidad las tendencias observadas en los gráficos fundamentándose en los principios de fenómenos de transporte, termodinámica o cinética química relevantes al proyecto, justificando el comportamiento físico de cada variable de respuesta.",
+      0.90: "Explica las tendencias y mecanismos científicos, pero presenta imprecisiones menores en la justificación técnica de 1 comportamiento anómalo.",
+      0.80: "Describe las tendencias gráficas pero con imprecisiones moderadas en la fundamentación científica o explicaciones cualitativas simplistas.",
+      0.70: "Discusión superficial; se limita a describir lo que se ve en el gráfico ('la variable aumentó') sin explicar el porqué físico/químico del fenómeno.",
+      0.50: "Omisión del análisis de tendencias o explicaciones técnicamente erróneas/pseudocientíficas."
+    },
+    tf_43: {
+      1.0: "Contrasta cuantitativamente los resultados obtenidos con valores reportados en literatura científica arbitrada (artículos, patentes o fichas técnicas de la industria), justificando técnica y críticamente las concordancias o discrepancias encontradas.",
+      0.90: "Compara con literatura científica oficial, pero presenta imprecisiones menores en la justificación de la discrepancia con 1 fuente bibliográfica.",
+      0.80: "Compara con literatura pero con imprecisiones moderadas (ej. fuentes no arbitradas/blogs web, o comparación cualitativa sin valores de referencia).",
+      0.70: "Comparación incompleta; cita literatura pero no contrasta numéricamente los resultados del proyecto con los datos teóricos/publicados.",
+      0.50: "Omisión total de la comparación con literatura científica oficial."
+    },
+    tf_44: {
+      1.0: "Identifica e integra dentro de la prosa de la discusión las posibles fuentes de error experimental, limitaciones instrumentales, variabilidad de materias primas e incertidumbres operacionales que sustentan las desviaciones observadas.",
+      0.90: "Contempla las fuentes de error en la discusión, pero presenta imprecisiones menores en la identificación de 1 causa secundaria.",
+      0.80: "Contempla fuentes de error en la discusión, pero con imprecisiones moderadas (ej. excusas genéricas de 'error humano' sin análisis técnico de la variabilidad).",
+      0.70: "Análisis de errores muy superficial; atribuye las desviaciones a factores no relacionados con el diseño experimental ejecutado.",
+      0.50: "Omisión del análisis de fuentes de error e incertidumbres dentro de la discusión."
+    },
+    tf_45: {
+      1.0: "Desarrolla con rigurosidad las 3 áreas: dimensionamiento de equipos principales y balances (escalamiento), desglose detallado de materias primas, tarifas ICE/CNFL y AyA y costo unitario (costos), y mercado meta con ventajas competitivas y permisos sanitarios/ambientales (mercado/regulación).",
+      0.90: "Desarrolla las 3 áreas con solidez técnica, pero presenta imprecisiones menores en el desglose de 1 rubro de costos o en la identificación de 1 permiso regulatorio.",
+      0.80: "Desarrolla las secciones pero con análisis financiero o de escalamiento superficial (ej. costos globales sin cotizaciones locales o marco regulatorio genérico).",
+      0.70: "Propuesta incompleta; omite una de las tres áreas obligatorias (escalamiento de planta, estructura de costos o mercado costarricense).",
+      0.50: "Omisión total de las secciones de escalamiento, costos de producción y mercado nacional."
     },
     // Calderas
     cald_1: {
@@ -337,142 +538,171 @@
     }
   };
 
+  // Helper para obtener el texto del descriptor por nivel garantizando desacoplamiento por práctica
+  function getCriterionDescriptorText(critId, pct, critObj) {
+    if (critObj && critObj.levels && critObj.levels[pct]) {
+      return critObj.levels[pct];
+    }
+    if (typeof CRITERION_LEVEL_DESCRIPTORS !== "undefined" && CRITERION_LEVEL_DESCRIPTORS[critId] && CRITERION_LEVEL_DESCRIPTORS[critId][pct]) {
+      return CRITERION_LEVEL_DESCRIPTORS[critId][pct];
+    }
+    const info = (typeof LEVEL_DESCRIPTORS !== "undefined" && LEVEL_DESCRIPTORS[pct]) ? LEVEL_DESCRIPTORS[pct] : (typeof LEVEL_DESCRIPTORS !== "undefined" ? LEVEL_DESCRIPTORS[1.0] : { titulo: "Nivel", desc: "" });
+    return (critObj && critObj.desc) ? `${info.desc} (${critObj.desc})` : info.desc;
+  }
+
   // ==========================================
   // 2. DEFINICIÓN DE CRITERIOS POR MODALIDAD
   // ==========================================
 
   function getDiscusionesEspecificas(practicaId, maxPts) {
     const isReporte = maxPts <= 38;
+    const hasDescriptors = typeof CRITERION_LEVEL_DESCRIPTORS !== "undefined";
+
     if (practicaId === "BOMBAS") {
       return [
         {
-          id: "disc_41",
+          id: "disc_bombas_41",
           categoria: "4. Resultados y Discusión",
           nombre: "4.1 Curvas Características (H-Q, η-Q, W-Q) vs. Fabricante",
           puntos: isReporte ? 10.0 : 11.0,
           tag: "Fondo",
-          desc: "Analiza el comportamiento de la bomba a partir de sus curvas características y compara la curva experimental H-Q con la del fabricante."
+          desc: "Analiza el comportamiento de la bomba a partir de sus curvas características y compara la curva experimental H-Q con la del fabricante.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_bombas_41 : null
         },
         {
-          id: "disc_42",
+          id: "disc_bombas_42",
           categoria: "4. Resultados y Discusión",
           nombre: "4.2 Curva del Sistema, Punto de Operación y BEP",
           puntos: isReporte ? 10.0 : 11.0,
           tag: "Fondo",
-          desc: "Construye e interpreta la curva del sistema, identifica el punto de operación real y lo compara contra el BEP."
+          desc: "Construye e interpreta la curva del sistema, identifica el punto de operación real y lo compara contra el BEP.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_bombas_42 : null
         },
         {
-          id: "disc_43",
+          id: "disc_bombas_43",
           categoria: "4. Resultados y Discusión",
           nombre: "4.3 Arreglos Serie y Paralelo y Diagnóstico de Desviaciones",
           puntos: isReporte ? 10.0 : 11.0,
           tag: "Fondo",
-          desc: "Evalúa el desempeño en serie y paralelo, contrasta con predicción teórica y diagnostica pérdidas y asimetrías."
+          desc: "Evalúa el desempeño en serie y paralelo, contrasta con predicción teórica y diagnostica pérdidas y asimetrías.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_bombas_43 : null
         },
         {
-          id: "disc_44",
+          id: "disc_bombas_44",
           categoria: "4. Resultados y Discusión",
           nombre: "4.4 Balance en Succión, NPSHd y Margen con NPSHr",
           puntos: isReporte ? 5.0 : 6.0,
           tag: "Fondo",
-          desc: "Calcula presión de succión por balance, determina NPSHd y argumenta consecuencias de cavitación."
+          desc: "Calcula presión de succión por balance, determina NPSHd y argumenta consecuencias de cavitación.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_bombas_44 : null
         },
         {
-          id: "disc_45",
+          id: "disc_bombas_45",
           categoria: "4. Resultados y Discusión",
           nombre: "4.5 Inclusión de Posibles Fuentes de Error en la Discusión",
           puntos: isReporte ? 3.0 : 4.0,
           tag: "Fondo",
-          desc: "Identifica e integra en la prosa de la discusión las posibles fuentes de error experimental e incertidumbres."
+          desc: "Identifica e integra en la prosa de la discusión las posibles fuentes de error experimental e incertidumbres.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_bombas_45 : null
         }
       ];
     } else if (practicaId === "CAIDA_PRESION") {
       return [
         {
-          id: "disc_41",
+          id: "disc_caida_41",
           categoria: "4. Resultados y Discusión",
           nombre: "4.1 Pérdidas Mayores, Factor f vs. Re y Diagrama de Moody",
           puntos: isReporte ? 18.0 : 20.0,
           tag: "Fondo",
-          desc: "Evalúa pérdidas en tramos rectos, grafica f vs Re, compara con Moody y analiza rugosidad relativa y diámetro."
+          desc: "Evalúa pérdidas en tramos rectos, grafica f vs Re, compara con Moody y analiza rugosidad relativa y diámetro.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_caida_41 : null
         },
         {
-          id: "disc_42",
+          id: "disc_caida_42",
           categoria: "4. Resultados y Discusión",
           nombre: "4.2 Pérdidas Menores, Coeficiente K en Accesorios vs. Literatura",
           puntos: isReporte ? 15.0 : 17.0,
           tag: "Fondo",
-          desc: "Determina ΔP y pérdidas menores en accesorios/válvulas, calcula K y compara con valores teóricos justificando desviaciones."
+          desc: "Determina ΔP y pérdidas menores en accesorios/válvulas, calcula K y compara con valores teóricos justificando desviaciones.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_caida_42 : null
         },
         {
-          id: "disc_43",
+          id: "disc_caida_43",
           categoria: "4. Resultados y Discusión",
           nombre: "4.3 Inclusión de Posibles Fuentes de Error (Purga, Manómetros, Caudal)",
           puntos: isReporte ? 5.0 : 6.0,
           tag: "Fondo",
-          desc: "Identifica e integra dentro de la prosa fuentes de error experimental (purga mangueras manométricas, precisión de Q)."
+          desc: "Identifica e integra dentro de la prosa fuentes de error experimental (purga mangueras manométricas, precisión de Q).",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_caida_43 : null
         }
       ];
     } else if (practicaId === "INTERCAMBIO_CALOR") {
       return [
         {
-          id: "disc_41",
+          id: "disc_calor_41",
           categoria: "4. Resultados y Discusión",
           nombre: "4.1 Comportamiento Térmico y Perfiles de Temperatura en Flujos",
           puntos: isReporte ? 14.0 : 15.0,
           tag: "Fondo",
-          desc: "Analiza comportamiento térmico y perfiles de temperatura en configuraciones paralelo, contracorriente y cruzado."
+          desc: "Analiza comportamiento térmico y perfiles de temperatura en configuraciones paralelo, contracorriente y cruzado.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_calor_41 : null
         },
         {
-          id: "disc_42",
+          id: "disc_calor_42",
           categoria: "4. Resultados y Discusión",
           nombre: "4.2 Efecto del Caudal y Temperatura sobre Q, LMTD y U",
           puntos: isReporte ? 14.0 : 15.0,
           tag: "Fondo",
-          desc: "Evalúa efecto de variación de caudal y temperatura sobre tasa de transferencia Q, LMTD y coeficiente global U."
+          desc: "Evalúa efecto de variación de caudal y temperatura sobre tasa de transferencia Q, LMTD y coeficiente global U.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_calor_42 : null
         },
         {
-          id: "disc_43",
+          id: "disc_calor_43",
           categoria: "4. Resultados y Discusión",
           nombre: "4.3 Balances de Energía y Pérdidas Térmicas al Ambiente",
           puntos: isReporte ? 7.0 : 9.0,
           tag: "Fondo",
-          desc: "Cuantifica balances de energía determinando Qh cedido, Qc ganado y pérdidas térmicas hacia el entorno."
+          desc: "Cuantifica balances de energía determinando Qh cedido, Qc ganado y pérdidas térmicas hacia el entorno.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_calor_43 : null
         },
         {
-          id: "disc_44",
+          id: "disc_calor_44",
           categoria: "4. Resultados y Discusión",
           nombre: "4.4 Inclusión de Posibles Fuentes de Error en la Discusión",
           puntos: isReporte ? 3.0 : 4.0,
           tag: "Fondo",
-          desc: "Identifica e integra en la prosa fuentes de error en termocuplas, estado estacionario y pérdidas al ambiente."
+          desc: "Identifica e integra en la prosa fuentes de error en termocuplas, estado estacionario y pérdidas al ambiente.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_calor_44 : null
         }
       ];
     } else {
       return [
         {
-          id: "disc_41",
+          id: "disc_gen_41",
           categoria: "4. Resultados y Discusión",
           nombre: "4.1 Análisis de Tendencias y Fenómenos Físico-Químicos",
           puntos: isReporte ? 19.0 : 21.0,
           tag: "Fondo",
-          desc: "Analiza rigurosamente los datos experimentales y gráficos en función de los principios teóricos."
+          desc: "Analiza rigurosamente los datos experimentales y gráficos en función de los principios teóricos.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_gen_41 : null
         },
         {
-          id: "disc_42",
+          id: "disc_gen_42",
           categoria: "4. Resultados y Discusión",
           nombre: "4.2 Comparación Crítica con Literatura / Valores Teóricos",
           puntos: isReporte ? 14.0 : 16.0,
           tag: "Fondo",
-          desc: "Contrasta numéricamente los resultados experimentales con ecuaciones de diseño y literatura técnica."
+          desc: "Contrasta numéricamente los resultados experimentales con ecuaciones de diseño y literatura técnica.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_gen_42 : null
         },
         {
-          id: "disc_43",
+          id: "disc_gen_43",
           categoria: "4. Resultados y Discusión",
           nombre: "4.3 Inclusión de Fuentes de Error e Incertidumbres",
           puntos: isReporte ? 5.0 : 6.0,
           tag: "Fondo",
-          desc: "Identifica e integra en la prosa de la discusión las incertidumbres y posibles fuentes de error."
+          desc: "Identifica e integra en la prosa de la discusión las incertidumbres y posibles fuentes de error.",
+          levels: hasDescriptors ? CRITERION_LEVEL_DESCRIPTORS.disc_gen_43 : null
         }
       ];
     }
@@ -1175,7 +1405,7 @@
             </div>
             <div class="rubric-desc-box">${c.desc}</div>
             <div class="rubric-level-desc-box level-sobresaliente" id="rubric-level-desc-${c.id}">
-              <span>📌 <strong>Sobresaliente (95 - 100):</strong> ${(CRITERION_LEVEL_DESCRIPTORS[c.id] && CRITERION_LEVEL_DESCRIPTORS[c.id][1.0]) ? CRITERION_LEVEL_DESCRIPTORS[c.id][1.0] : LEVEL_DESCRIPTORS[1.0].desc}</span>
+              <span>📌 <strong>Sobresaliente (95 - 100):</strong> ${getCriterionDescriptorText(c.id, 1.0, c)}</span>
               <button type="button" class="btn btn-secondary btn-copy-level-desc" style="padding: 2px 8px; font-size: 0.73rem; white-space: nowrap;">📋 Copiar Justificación</button>
             </div>
             <div class="rubric-levels-bar">
@@ -1367,9 +1597,7 @@
     else if (pct >= 0.65) levelClass = "level-suficiente";
     else levelClass = "level-deficiente";
 
-    const customDesc = (CRITERION_LEVEL_DESCRIPTORS[critId] && CRITERION_LEVEL_DESCRIPTORS[critId][pct])
-      ? CRITERION_LEVEL_DESCRIPTORS[critId][pct]
-      : (critObj ? `${info.desc} (${critObj.desc})` : info.desc);
+    const customDesc = getCriterionDescriptorText(critId, pct, critObj);
 
     box.className = "rubric-level-desc-box " + levelClass;
     box.innerHTML = `
@@ -1591,9 +1819,20 @@
   // ==========================================
   function loadCommentsForSection(secId) {
     const textarea = document.getElementById("textarea-comentario-seccion");
-    if (textarea) {
-      textarea.value = appState.comentariosPorSeccion[secId] || "";
+    if (!textarea) return;
+    let comment = (appState.comentariosPorSeccion && appState.comentariosPorSeccion[secId] !== undefined)
+      ? appState.comentariosPorSeccion[secId]
+      : undefined;
+    if ((comment === undefined || comment === "") && appState.comentariosPorSeccion) {
+      const legacyMatch = secId.match(/^disc_.*_(\d+)$/);
+      if (legacyMatch) {
+        const legacyId = "disc_" + legacyMatch[1];
+        if (appState.comentariosPorSeccion[legacyId]) {
+          comment = appState.comentariosPorSeccion[legacyId];
+        }
+      }
     }
+    textarea.value = comment || "";
   }
 
   function initShortcutsManager() {
